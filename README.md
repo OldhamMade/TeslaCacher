@@ -1,5 +1,7 @@
 # TeslaCacher
 
+[![Build Status](https://travis-ci.org/OldhamMade/TeslaCacher.svg?branch=main)][travis]
+
 TeslaCacher is a Basic Cache Middleware for Tesla backed by
 [Redix][Redix]. It will cache `GET` requests for `N` milliseconds, if
 defined, otherwise for the lifetime of the Redis session. Requests
@@ -58,3 +60,4 @@ common redis key schemes. Default is `tesla_cacher`.
 [Redix]: https://hex.pm/packages/redix
 [Teslacache]: https://hex.pm/packages/tesla_cache
 [Cachex]: https://hex.pm/packages/cachex
+[travis]: https://travis-ci.org/OldhamMade/TeslaCacher
