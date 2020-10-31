@@ -18,6 +18,8 @@ defmodule Tesla.Middleware.Cacher do
   ```
   """
 
+  require Logger
+
   @redix_timeout 5000
 
   @impl true
@@ -90,6 +92,7 @@ defmodule Tesla.Middleware.Cacher do
   end
 
   defp handle_redix_lookup({_, msg}) do
+    Logger.warn("TeslaCacher: unexpected cache miss: #{inspect msg}")
     {:miss, msg}
   end
 
@@ -105,7 +108,9 @@ defmodule Tesla.Middleware.Cacher do
     |> handle_redix_insert()
   end
 
-  defp handle_redix_insert({status, _}) do
-    status
+  defp handle_redix_insert({:ok, _}), do: :ok
+  defp handle_redix_insert(result) do
+    Logger.warn("TeslaCacher: unable to insert, got: #{inspect result}")
+    :ok
   end
 end
