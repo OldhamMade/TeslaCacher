@@ -10,14 +10,6 @@ otp_release:
 
 matrix:
   include:
-    - elixir: '1.6'
-      otp_release: '18.3'
-    - elixir: '1.6'
-      otp_release: '19.0'
-    - elixir: '1.6'
-      otp_release: '20.0'
-    - elixir: '1.6'
-      otp_release: '21.0'
     - elixir: '1.7'
       otp_release: '20.0'
     - elixir: '1.7'

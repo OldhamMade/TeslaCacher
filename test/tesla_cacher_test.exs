@@ -5,7 +5,7 @@ defmodule Tesla.Middleware.CacherTest do
   @expiry_sleep 111
 
   setup do
-    redix_uri = System.get_env("REDIS_URI", "redis://localhost:6379")
+    redix_uri = System.get_env("REDIS_URI") || "redis://localhost:6379"
 
     {:ok, redix_pid} = Redix.start_link(redix_uri, name: :redix)
     {:ok, agent_pid} = Agent.start_link(fn -> 0 end, name: :http_call_count)
