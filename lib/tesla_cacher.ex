@@ -49,8 +49,8 @@ defmodule Tesla.Middleware.Cacher do
   end
 
   def run({_, env}, next) do
-    {:ok, env} = Tesla.run(env, next)
-    {:miss, env}
+    Tesla.run(env, next)
+    |> handle_run()
   end
 
   def insert({:miss, %Tesla.Env{method: :get, status: status} = env}, opts) when status == 200 do
@@ -61,7 +61,8 @@ defmodule Tesla.Middleware.Cacher do
     {status, env}
   end
 
-  def insert({_, env}, _opts), do: {:ok, env}
+  def insert({_, %Tesla.Env{} = env}, _opts), do: {:ok, env}
+  def insert(result, _opts), do: result
 
   # private
 
@@ -95,6 +96,9 @@ defmodule Tesla.Middleware.Cacher do
     Logger.warn("TeslaCacher: unexpected cache miss: #{inspect msg}")
     {:miss, msg}
   end
+
+  defp handle_run({:error, :timeout} = result), do: result
+  defp handle_run({:ok, env}), do: {:miss, env}
 
   defp redix_insert(key, value, redix: conn, expiry: ttl, timeout: timeout, prefix: _)
        when is_conn(conn) and is_integer(ttl) do

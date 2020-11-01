@@ -55,13 +55,22 @@ defmodule Tesla.Middleware.CacherTest do
     end
   end
 
+  defmodule BadClient do
+    use Tesla
+
+    plug(Tesla.Middleware.Cacher, redix: :redix, expiry: 100)
+
+    adapter(fn env ->
+      {:error, :timeout}
+    end)
+  end
+
   describe "when response status code is 200" do
     setup do
       {:ok, res} = Client.get("/200_OK")
       [res: res]
     end
 
-    @tag :active
     test "should return the body as OK", context do
       assert context[:res].body == "OK"
     end
@@ -154,4 +163,11 @@ defmodule Tesla.Middleware.CacherTest do
       assert Client.http_call_count() == 2
     end
   end
+
+  describe "when the request times out" do
+    test "should return timeout error" do
+      assert {:error, :timeout} = BadClient.get("/200_OK")
+    end
+  end
+
 end
