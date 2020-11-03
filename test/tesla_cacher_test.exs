@@ -169,5 +169,4 @@ defmodule Tesla.Middleware.CacherTest do
       assert {:error, :timeout} = BadClient.get("/200_OK")
     end
   end
-
 end

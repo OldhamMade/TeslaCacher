@@ -1,22 +1,10 @@
 defmodule Tesla.Middleware.Cacher do
+  @moduledoc "README.md"
+             |> File.read!()
+             |> String.split("<!-- MDOC !-->")
+             |> Enum.fetch!(1)
+
   @behaviour Tesla.Middleware
-
-  @moduledoc """
-  Cache the result in redis.
-
-  ### Example
-  ```elixir
-  defmodule MyClient do
-    use Tesla
-
-    plug Tesla.Middleware.Cacher,
-      redix: :redix,
-      expiry: :timer.seconds(2),
-      timeout: :timer.seconds(5),
-      prefix: :tesla_cacher
-  end
-  ```
-  """
 
   require Logger
 
@@ -56,7 +44,7 @@ defmodule Tesla.Middleware.Cacher do
 
   def insert({:miss, %Tesla.Env{method: :get, status: status} = env}, opts) when status == 200 do
     key = make_key(env, opts)
-    value = env |> :erlang.term_to_binary([compressed: @compression_level])
+    value = env |> :erlang.term_to_binary(compressed: @compression_level)
     status = redix_insert(key, value, opts)
 
     {status, env}
@@ -94,7 +82,7 @@ defmodule Tesla.Middleware.Cacher do
   end
 
   defp handle_redix_lookup({_, msg}) do
-    Logger.warn("TeslaCacher: unexpected cache miss: #{inspect msg}")
+    Logger.warn("TeslaCacher: unexpected cache miss: #{inspect(msg)}")
     {:miss, msg}
   end
 
@@ -114,8 +102,9 @@ defmodule Tesla.Middleware.Cacher do
   end
 
   defp handle_redix_insert({:ok, _}), do: :ok
+
   defp handle_redix_insert(result) do
-    Logger.warn("TeslaCacher: unable to insert, got: #{inspect result}")
+    Logger.warn("TeslaCacher: unable to insert, got: #{inspect(result)}")
     :ok
   end
 end
