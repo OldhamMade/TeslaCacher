@@ -21,6 +21,7 @@ defmodule Tesla.Middleware.Cacher do
   require Logger
 
   @redix_timeout 5000
+  @compression_level 6
 
   @impl true
   def call(env, next, opts) do
@@ -55,7 +56,7 @@ defmodule Tesla.Middleware.Cacher do
 
   def insert({:miss, %Tesla.Env{method: :get, status: status} = env}, opts) when status == 200 do
     key = make_key(env, opts)
-    value = :erlang.term_to_binary(env)
+    value = env |> :erlang.term_to_binary([compressed: @compression_level])
     status = redix_insert(key, value, opts)
 
     {status, env}
@@ -89,7 +90,7 @@ defmodule Tesla.Middleware.Cacher do
   end
 
   defp handle_redix_lookup({:ok, result}) do
-    {:hit, :erlang.binary_to_term(result)}
+    {:hit, :erlang.binary_to_term(result, [:safe])}
   end
 
   defp handle_redix_lookup({_, msg}) do
