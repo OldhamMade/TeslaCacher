@@ -1,6 +1,14 @@
 # TeslaCacher
 
-[![Build Status](https://travis-ci.org/OldhamMade/TeslaCacher.svg?branch=main)][travis]
+<!-- MDOC !-->
+
+[![Build Status](https://travis-ci.org/OldhamMade/TeslaCacher.svg?branch=main)][TravisCI]
+[![Module Version](https://img.shields.io/hexpm/v/tesla_cacher.svg)](https://hex.pm/packages/tesla_cacher)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/tesla_cacher)
+[![Total Download](https://img.shields.io/hexpm/dt/tesla_cacher.svg)](https://hex.pm/packages/tesla_cacher)
+[![License](https://img.shields.io/hexpm/l/tesla_cacher.svg)](https://hex.pm/packages/tesla_cacher)
+[![Last Updated](https://img.shields.io/github/last-commit/OldhamMade/TeslaCacher.svg)](https://github.com/OldhamMade/TeslaCacher/commits/master)
+
 
 TeslaCacher is a Basic Cache Middleware for Tesla backed by
 [Redix][Redix]. It will cache `GET` requests for `N` milliseconds, if
@@ -12,8 +20,7 @@ Not to be confused with [TeslaCache][Teslacache], which is backed by
 
 ## Installation
 
-The package can be installed by adding `tesla_cacher` to your list of
-dependencies in `mix.exs`:
+Add `tesla_cacher` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -23,7 +30,7 @@ def deps do
 end
 ```
 
-## Usage:
+## Usage
 
 TeslaCacher does not manage Redix for you, you must start and monitor
 it yourself and provide the details to the plugin:
@@ -40,7 +47,7 @@ defmodule MyClient do
 end
 ```
 
-### Options:
+### Options
 
 `redix` -- [required] the connection handle for redix. Can be an
 atom or a PID.
@@ -60,4 +67,4 @@ common redis key schemes. Default is `tesla_cacher`.
 [Redix]: https://hex.pm/packages/redix
 [Teslacache]: https://hex.pm/packages/tesla_cache
 [Cachex]: https://hex.pm/packages/cachex
-[travis]: https://travis-ci.org/OldhamMade/TeslaCacher
+[TravisCI]: https://travis-ci.org/OldhamMade/TeslaCacher

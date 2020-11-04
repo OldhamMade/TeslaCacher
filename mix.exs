@@ -43,18 +43,16 @@ defmodule TeslaCacher.MixProject do
     [
       {:tesla, "~> 1.3"},
       {:redix, "~> 1.0"},
-      {:ex_doc, "~> 0.22", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.22", only: :dev, runtime: false}
     ]
   end
 
   defp docs() do
     [
-      main: "readme",
+      main: "Tesla.Middleware.Cacher",
+      api_reference: false,
       source_ref: "v#{@version}",
       source_url: @repo_url,
-      extras: [
-        "README.md",
-      ]
     ]
   end
 end
